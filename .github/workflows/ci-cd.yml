@@ -26,8 +26,11 @@ jobs:
 
     - name: Verificar cobertura mínima
       run: |
-        if grep -q '"total": {[^}]*"lines": {[^}]*"pct": [89][0-9]\|100' coverage/coverage-final.json; then
-          echo "Cobertura OK!"
+        COVERAGE=$(node -pe "require('./coverage/coverage-summary.json').total.lines.pct")
+        echo "Cobertura de linhas: $COVERAGE%"
+        if [ $(echo "$COVERAGE < 80" | bc -l) -eq 1 ]; then
+          echo "Cobertura abaixo de 80%!"
+          exit 1
         else
-          echo "Cobertura abaixo de 80%!" && exit 1
+          echo "Cobertura OK!"
         fi

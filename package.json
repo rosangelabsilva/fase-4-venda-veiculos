@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "start": "node src/index.js",
-  "test": "jest --coverage"
+    "start": "node src/index.js",
+    "test": "jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +16,9 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "supertest": "^7.1.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["json-summary", "text", "lcov"]
   }
 }
