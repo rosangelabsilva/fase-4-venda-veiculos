@@ -1,0 +1,33 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Verificar cobertura mínima
+      run: |
+        if grep -q '"total": {[^}]*"lines": {[^}]*"pct": [89][0-9]\|100' coverage/coverage-summary.json; then
+          echo "Cobertura OK!"
+        else
+          echo "Cobertura abaixo de 80%!" && exit 1
+        fi
